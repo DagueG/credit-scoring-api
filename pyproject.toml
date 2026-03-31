@@ -10,7 +10,11 @@ requires-python = ">=3.11"
 authors = [
     {name = "Author", email = "author@example.com"},
 ]
-dependencies = []
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.0.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
