@@ -1,0 +1,36 @@
+# Virtual environments
+.venv
+venv/
+env/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+
+# Git
+.git
+.gitignore
+
+# Development
+notebooks/
+tests/
+.vscode/
+.idea/
+
+# Data and logs (runtime, shouldn't be in image)
+data/
+logs/
+
+# CI/CD
+.github/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.lock
