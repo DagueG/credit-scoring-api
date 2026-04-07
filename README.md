@@ -193,11 +193,35 @@ Les prédictions sont loggées en JSON structuré dans `logs/api_logs.jsonl` :
 
 Le fichier `data/drift_baseline.parquet` contient un échantillon baseline (10000 clients) sans SK_ID_CURR, destiné au monitoring du data drift. À implémenter dans `notebooks/monitoring.ipynb`.
 
+## � Simulation de Trafic
+
+Pour générer du trafic réaliste et remplir les logs à des fins de monitoring et d'analyse :
+
+```bash
+# Simulation basique (500 requêtes, sélection uniforme)
+uv run python scripts/simulate_traffic.py
+
+# Avec simulation de data drift (80% clients haut crédit, 20% random)
+uv run python scripts/simulate_traffic.py --n-requests 1000 --drift
+
+# Avec délai personnalisé (API distante)
+uv run python scripts/simulate_traffic.py --url https://api.example.com --delay 0.1
+```
+
+**Options disponibles** :
+- `--url` : URL de base de l'API (défaut: http://localhost:8000)
+- `--n-requests` : Nombre de requêtes (défaut: 500)
+- `--delay` : Délai entre requêtes en secondes (défaut: 0.05)
+- `--drift` : Active la simulation de data drift
+
+Voir [scripts/TRAFFIC_SIMULATION.md](scripts/TRAFFIC_SIMULATION.md) pour la documentation complète.
+
 ## 📖 Documentation additionnelle
 
 - **Schemas** : [app/schemas.py](app/schemas.py) - Modèles Pydantic
 - **Model Service** : [app/model.py](app/model.py) - Logique de prédiction
 - **API** : [app/main.py](app/main.py) - Endpoints et lifecycle
+- **Simulation de Trafic** : [scripts/TRAFFIC_SIMULATION.md](scripts/TRAFFIC_SIMULATION.md) - Load testing et drift simulation
 
 ---
 
