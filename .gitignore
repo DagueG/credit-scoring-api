@@ -40,9 +40,7 @@ env/
 
 # Project-specific
 # Data
-data/application_train.csv  # Don't commit raw data (too large)
-data/application_test.csv   # Don't commit test data
-data/sample*.csv            # Don't commit sample data
+data/
 
 # Keep reference and baseline (needed for production)
 !data/clients_reference.parquet
