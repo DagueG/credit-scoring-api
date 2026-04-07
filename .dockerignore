@@ -22,7 +22,9 @@ tests/
 .idea/
 
 # Data and logs (runtime, shouldn't be in image)
-data/
+# Exclude only large training data, keep reference and baseline for production
+data/application_train.csv
+data/*.csv
 logs/
 
 # CI/CD

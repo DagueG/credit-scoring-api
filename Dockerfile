@@ -34,8 +34,8 @@ COPY --chown=appuser:appuser app/ ./app/
 
 # Copier le dossier model et données de référence
 COPY --chown=appuser:appuser model/ ./model/
-COPY --chown=appuser:appuser data/clients_reference.parquet ./data/clients_reference.parquet
-COPY --chown=appuser:appuser data/drift_baseline.parquet ./data/drift_baseline.parquet 2>/dev/null || true
+COPY --chown=appuser:appuser data/clients_reference.parquet ./data/
+COPY --chown=appuser:appuser data/drift_baseline.parquet ./data/
 
 # Créer le dossier logs
 RUN mkdir -p logs && chown appuser:appuser logs
