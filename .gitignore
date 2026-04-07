@@ -39,11 +39,22 @@ env/
 .DS_Store
 
 # Project-specific
-data/
+# Data
+data/application_train.csv  # Don't commit raw data (too large)
+data/application_test.csv   # Don't commit test data
+data/sample*.csv            # Don't commit sample data
+
+# Keep reference and baseline (needed for production)
+!data/clients_reference.parquet
+!data/drift_baseline.parquet
+
+# Model file (needed for production)
+!model/model.pkl
+!model/model.joblib
+
+# Logs (runtime)
 logs/
-model/*.pkl
-model/*.joblib
+logs/*.jsonl
 
 # UV
 .uv-cache/
-uv.lock

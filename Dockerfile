@@ -32,8 +32,13 @@ COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
 # Copier le code de l'application
 COPY --chown=appuser:appuser app/ ./app/
 
-# Copier le dossier model s'il existe, sinon créer un vide
-RUN mkdir -p model logs && chown appuser:appuser model logs
+# Copier le dossier model et données de référence
+COPY --chown=appuser:appuser model/ ./model/
+COPY --chown=appuser:appuser data/clients_reference.parquet ./data/clients_reference.parquet
+COPY --chown=appuser:appuser data/drift_baseline.parquet ./data/drift_baseline.parquet 2>/dev/null || true
+
+# Créer le dossier logs
+RUN mkdir -p logs && chown appuser:appuser logs
 
 # Passer à l'utilisateur non-root
 USER appuser
