@@ -192,7 +192,35 @@ Les prédictions sont loggées en JSON structuré dans `logs/api_logs.jsonl` :
 ## 🚨 Monitoring et Drift
 
 Le fichier `data/drift_baseline.parquet` contient un échantillon baseline (10000 clients) sans SK_ID_CURR, destiné au monitoring du data drift. À implémenter dans `notebooks/monitoring.ipynb`.
+## 🚀 Déploiement
 
+### Hugging Face Spaces
+
+L'API est automatiquement déployée sur **Hugging Face Spaces** à chaque push sur `main` via GitHub Actions.
+
+[![Hugging Face Spaces](https://img.shields.io/badge/🤗%20Spaces-Credit%20Scoring%20API-blue)](https://huggingface.co/spaces/DagueGG/credit-scoring-api)
+
+**URL du Space**: https://huggingface.co/spaces/DagueGG/credit-scoring-api
+
+**Workflow de déploiement** :
+1. **Test** (⚡ ~3min) : Lancer tests unitaires pytest
+2. **Build** (🐳 ~10min) : Construire et pusher image Docker Hub
+3. **Deploy to HF** (📤 ~2min) : Force-push du code vers remote HF Spaces
+   - Copie `README_HF.md` → `README.md` (header YAML spécifique HF)
+   - Push l'intégralité du repo vers `https://huggingface.co/spaces/DagueGG/credit-scoring-api`
+   - HF Spaces rebuild automatiquement l'image Docker
+
+**Port** : L'API s'exécute sur le port **7860** sur HF Spaces (convention HF).
+
+**Fichiers essentiels pour déploiement** :
+- `Dockerfile` : Image multi-stage avec port 7860
+- `README_HF.md` : Header YAML pour HF Spaces (copié en README.md)
+- `model/model.pkl` : Modèle LightGBM (374 KB dans Git)
+- `data/*.parquet` : Datasets de référence et baseline (< 10 MB, pas de LFS nécessaire)
+
+**Secrets requis** :
+- `HF_TOKEN` : Token d'accès Hugging Face (lecture/écriture sur l'espace)
+- `HF_USERNAME` : Nom d'utilisateur HF (pour le git push)
 ## � Simulation de Trafic
 
 Pour générer du trafic réaliste et remplir les logs à des fins de monitoring et d'analyse :

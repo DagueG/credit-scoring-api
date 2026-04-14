@@ -68,3 +68,38 @@ jobs:
 
       - name: Deploy placeholder
         run: echo "Deploy step - ready for Hugging Face Spaces or Cloud Run"
+
+  deploy-huggingface:
+    name: Deploy to Hugging Face Spaces
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git credentials
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
+      - name: Copy README for HF Spaces
+        run: cp README_HF.md README.md
+
+      - name: Add Hugging Face remote
+        run: |
+          git remote add huggingface https://DagueGG:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/DagueGG/credit-scoring-api
+          git fetch huggingface || true
+
+      - name: Commit README change for HF
+        run: |
+          git add README.md
+          git commit -m "Update README for Hugging Face Spaces deployment" || echo "No changes to commit"
+
+      - name: Force push to Hugging Face Spaces
+        run: |
+          git push --force huggingface main
+        env:
+          GIT_TERMINAL_PROMPT: 0
