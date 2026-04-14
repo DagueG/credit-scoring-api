@@ -32,10 +32,9 @@ COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
 # Copier le code de l'application
 COPY --chown=appuser:appuser app/ ./app/
 
-# Copier le dossier model et données de référence
-COPY --chown=appuser:appuser model/ ./model/
-COPY --chown=appuser:appuser data/clients_reference.parquet ./data/
-COPY --chown=appuser:appuser data/drift_baseline.parquet ./data/
+# Copier les scripts de téléchargement des fichiers
+COPY --chown=appuser:appuser scripts/download_models.py ./scripts/
+RUN mkdir -p model data logs && chown appuser:appuser model data logs
 
 # Créer le dossier logs
 RUN mkdir -p logs && chown appuser:appuser logs
@@ -55,5 +54,5 @@ EXPOSE 7860
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:7860/health || exit 1
 
-# Lancer l'API
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Lancer l'API avec entrypoint qui télécharge les fichiers
+ENTRYPOINT ["python", "scripts/entrypoint.py"]

@@ -1,0 +1,4 @@
+# HF Spaces ignore file - exclude binary files
+data/
+model/
+reports/
