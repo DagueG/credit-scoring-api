@@ -105,6 +105,12 @@ jobs:
           git add README.md
           git commit -m "Update README for Hugging Face Spaces deployment" || echo "No changes to commit"
 
+      - name: Push Git LFS files to Hugging Face
+        run: |
+          git lfs push --all huggingface main
+        env:
+          GIT_TERMINAL_PROMPT: 0
+
       - name: Force push to Hugging Face Spaces
         run: |
           git push --force huggingface main
